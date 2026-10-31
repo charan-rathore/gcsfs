@@ -242,7 +242,9 @@ def test_cache_credentials_require_matching_project_and_access(monkeypatch, cach
 
     cached = Credentials("cached-fixture-token")
     monkeypatch.setattr(GoogleCredentials, "tokens", {cache_key: cached})
-    with pytest.raises(ValueError, match="No cached tokens"):
+    with pytest.raises(
+        ValueError, match="^No cached tokens for this project and access level$"
+    ):
         GoogleCredentials(
             project="my-project", access="read_only", token="cache", on_google=False
         )
